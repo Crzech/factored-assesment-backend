@@ -10,19 +10,39 @@ class FilmsController < ApplicationController
 
   # GET /films/1
   def show
-    render json: @film
+    render json: @film, include: [:planets]
   end
 
   # POST /films
   def create
     @film = Film.new(film_params)
+    @planet_ids = params[:planet_ids]
+
+    if !@planet_ids || !@planet_ids.is_a?(Array) || @planet_ids.empty?
+      return(
+        render json: {
+                 planet_ids: ["shouldn't be empty and should be an array"],
+               },
+               status: :unprocessable_entity
+      )
+    end
 
     if @film.save
       ActiveRecord::Base.transaction do
-        params[:planet_ids].each do |planet_id|
-          planet = Planet.find(planet_id)
+        @planet_ids.each do |planet_id|
+          planet = nil
+          begin
+            planet = Planet.find(planet_id)
+          rescue ActiveRecord::RecordNotFound => e
+            return(
+              render json: {
+                       planet_ids: ["didn't find planet #{planet_id}"],
+                     },
+                     status: :unprocessable_entity
+            )
+          end
           new_film_planet = FilmPlanet.new(planet: planet, film: @film)
-          if !new_film_planet.save()
+          unless new_film_planet.save!
             return(
               render json: new_film_planet.errors, status: :unprocessable_entity
             )
@@ -38,6 +58,40 @@ class FilmsController < ApplicationController
   # PATCH/PUT /films/1
   def update
     if @film.update(film_params)
+      @planet_ids = params[:planet_ids]
+      if @planet_ids
+        if !@planet_ids.is_a?(Array) || @planet_ids.empty?
+          return(
+            render json: {
+                     planet_ids: ["shouldn't be empty and should be an array"],
+                   },
+                   status: :unprocessable_entity
+          )
+        end
+        ActiveRecord::Base.transaction do
+          FilmPlanet.destroy_by(film_id: @film.id)
+          @planet_ids.each do |planet_id|
+            planet = nil
+            begin
+              planet = Planet.find(planet_id)
+            rescue ActiveRecord::RecordNotFound => e
+              return(
+                render json: {
+                         planet_ids: ["didn't find planet #{planet_id}"],
+                       },
+                       status: :unprocessable_entity
+              )
+            end
+            new_film_planet = FilmPlanet.new(planet: planet, film: @film)
+            unless new_film_planet.save!
+              return(
+                render json: new_film_planet.errors,
+                       status: :unprocessable_entity
+              )
+            end
+          end
+        end
+      end
       render json: @film
     else
       render json: @film.errors, status: :unprocessable_entity
@@ -64,7 +118,7 @@ class FilmsController < ApplicationController
       :opening_crawl,
       :director,
       :producer,
-      :release_date
+      :release_date,
     )
   end
 end
