@@ -1,4 +1,6 @@
 class Film < ApplicationRecord
+  has_many :film_planets, dependent: :destroy
+  has_many :planets, through: :film_planets
   validates :title,
             :episode_id,
             :opening_crawl,

@@ -1,5 +1,7 @@
 class Planet < ApplicationRecord
   has_many :persons, dependent: :delete_all
+  has_many :film_planets, dependent: :destroy
+  has_many :films, through: :film_planets
   validates :name,
             :diameter,
             :rotation_period,

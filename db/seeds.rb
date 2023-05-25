@@ -1,6 +1,7 @@
 unless Rails.env.production?
   Planet.destroy_all
   Person.destroy_all
+  Film.destroy_all
 
   connection = ActiveRecord::Base.connection
 
