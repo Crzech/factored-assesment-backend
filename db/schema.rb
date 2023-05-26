@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_25_171707) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_26_004956) do
   create_table "film_people", force: :cascade do |t|
     t.integer "film_id", null: false
     t.integer "person_id", null: false
@@ -63,6 +63,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_25_171707) do
     t.string "surface_water"
     t.datetime "created", default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "updated", default: -> { "CURRENT_TIMESTAMP" }
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.string "username"
+    t.string "email"
+    t.string "password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "film_people", "films", on_delete: :cascade
