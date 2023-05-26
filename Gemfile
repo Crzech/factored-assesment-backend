@@ -38,6 +38,7 @@ gem "rack-cors"
 gem 'validates_timeliness', '~> 7.0.0.beta1'
 
 gem 'jwt'
+gem 'dotenv-rails', groups: [:development, :test]
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
