@@ -1,5 +1,7 @@
 class Person < ApplicationRecord
   belongs_to :planet
+  has_many :film_people, dependent: :destroy
+  has_many :films, through: :film_people
   validates :name,
             :birth_year,
             :eye_color,

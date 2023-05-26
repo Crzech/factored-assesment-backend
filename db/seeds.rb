@@ -15,9 +15,8 @@ unless Rails.env.production?
         connection.execute(statement)
       end
     end
-    p "Database seeded successfully"
+    p 'Database seeded successfully'
   rescue ActiveRecord::StatementInvalid => err
-    ActiveRecord::Rollback
-    p "Seeding failed with error: (#{err.to_s}) Rolling back"
+    p "Seeding failed with error: (#{err}) Rolling back"
   end
 end
