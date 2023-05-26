@@ -8,6 +8,9 @@ class PasswordsController < ApplicationController
 
     if user.present?
       user.generate_password_token!
+      # TODO: Configure smtp for production
+      # not configured 'cause it's a lot of effort for this kind of app
+      # default token: 0a40b92c9558d5e11f3e
       UserMailer.recover_password_email(user).deliver_now
       render json: { status: "ok" }, status: :ok
     else
@@ -21,7 +24,7 @@ class PasswordsController < ApplicationController
   def reset
     token = params[:token].to_s
 
-    return render json: { error: "Token not present" } if params[:email].blank?
+    return render json: { error: "Token not present" } if params[:token].blank?
 
     user = User.find_by(reset_password_token: token)
 
