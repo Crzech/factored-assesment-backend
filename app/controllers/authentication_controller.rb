@@ -3,7 +3,7 @@ class AuthenticationController < ApplicationController
 
   # POST /auth/login
   def login
-    @user = User.find_by_username(params[:username])
+    @user = User.find_by_username(params[:username].downcase)
     if @user&.authenticate(params[:password])
       token = jwt_enconde(user_id: @user.id, email: @user.email)
       render json: { token: token }, status: :ok
