@@ -47,7 +47,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_26_044126) do
     t.string "skin_color"
     t.integer "planet_id"
     t.datetime "created", default: -> { "CURRENT_TIMESTAMP" }
-    t.datetime "updated", default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "edited", default: -> { "CURRENT_TIMESTAMP" }
     t.index ["planet_id"], name: "index_people_on_planet_id"
   end
 
@@ -62,7 +62,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_26_044126) do
     t.string "terrain"
     t.string "surface_water"
     t.datetime "created", default: -> { "CURRENT_TIMESTAMP" }
-    t.datetime "updated", default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "edited", default: -> { "CURRENT_TIMESTAMP" }
   end
 
   create_table "users", force: :cascade do |t|

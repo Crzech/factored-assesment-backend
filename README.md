@@ -1,24 +1,22 @@
-# README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Information about the project
 
-Things you may want to cover:
 
-* Ruby version
+## Ruby version
+ruby 3.2.2
 
-* System dependencies
+## Rails version
+Rails 7.0.5
 
-* Configuration
+## Database creation
+1. To create the database run `rails db:create`
+2. To create structure of the database run `rails db:migrate`
 
-* Database creation
+## Database initialization
+To seed database run `rails db:migrate`
 
-* Database initialization
+## Install dependencies
+`bundle install`
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## To run Server
+`rails s`
